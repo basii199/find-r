@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  /* Primary Colors */
+  --color-primary: #1E3A8A;  /* Royal Blue */
+  --color-accent: #F97316;   /* Vibrant Orange */
+
+  /* Backgrounds */
+  --color-bg-light: #F3F4F6; /* Light Gray */
+  --color-bg-dark: #111827;  /* Charcoal */
+
+  /* Text */
+  --color-text-dark: #111827; /* Charcoal */
+  --color-text-light: #ffffff; /* Soft White */
+
+  /* Secondary */
+  --color-secondary: #64748B; /* Slate Blue */
+
+  /* Feedback */
+  --color-success: #10B981;  /* Emerald Green */
+  --color-error: #EF4444;    /* Crimson Red */
+}
