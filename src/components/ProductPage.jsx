@@ -1,6 +1,6 @@
-import React from 'react';
+import { useState } from 'react';
 import ProductCard from './ProductCard'; // Our previous component
-import { useGetProductByCategoryQuery } from '../services/products';
+import { useGetProductsByCategoryQuery } from '../services/products';
 
 const ProductPage = ({ product }) => {
   const {
@@ -22,9 +22,13 @@ const ProductPage = ({ product }) => {
     reviews
   } = product;
 
+  console.log( product);
+
   // Calculate discounted price
   const discountedPrice = (price - (price * discountPercentage / 100)).toFixed(2);
-  const {data, error, isLoading, refetch} = useGetProductByCategoryQuery(product.category);
+  const {data, error, isLoading, refetch} = useGetProductsByCategoryQuery(product.category);
+
+  const [mainImage, setMainImage] = useState(images[0])
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -32,14 +36,14 @@ const ProductPage = ({ product }) => {
       <nav className="flex mb-6" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1 md:space-x-2">
           <li className="inline-flex items-center">
-            <a href="#" className="text-sm text-gray-700 hover:text-blue-600">Home</a>
+            <a href="/products" className="text-sm text-gray-700 hover:text-blue-600">Home</a>
           </li>
           <li>
             <div className="flex items-center">
               <svg className="w-3 h-3 mx-1 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
               </svg>
-              <a href="#" className="text-sm text-gray-700 hover:text-blue-600 ml-1">{category}</a>
+              <a href={`/products/category/${category}`} className="text-sm text-gray-700 hover:text-blue-600 ml-1">{category}</a>
             </div>
           </li>
           <li aria-current="page">
@@ -59,14 +63,14 @@ const ProductPage = ({ product }) => {
           <div className="sticky top-4">
             <div className="rounded-lg overflow-hidden mb-4 bg-gray-100 aspect-square">
               <img 
-                src={images[0]} 
+                src={mainImage} 
                 alt={title} 
                 className="w-full h-full object-contain"
               />
             </div>
             <div className="grid grid-cols-4 gap-2">
               {images.map((img, index) => (
-                <button key={index} className="aspect-square bg-gray-100 rounded overflow-hidden border-2 border-transparent hover:border-blue-500">
+                <button key={index} onClick={()=>{setMainImage(img); console.log(img)}} className="aspect-square bg-gray-100 rounded overflow-hidden border-2 border-transparent hover:border-blue-500 shadow-sm">
                   <img src={img} alt={`${title} ${index + 1}`} className="w-full h-full object-contain" />
                 </button>
               ))}
@@ -133,20 +137,6 @@ const ProductPage = ({ product }) => {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 mb-8">
-            <div className="flex items-center border border-gray-300 rounded-md">
-              <button className="px-3 py-2 text-gray-600 hover:bg-gray-100">-</button>
-              <span className="px-4 py-2">1</span>
-              <button className="px-3 py-2 text-gray-600 hover:bg-gray-100">+</button>
-            </div>
-            <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition-colors">
-              Add to Cart
-            </button>
-            <button className="flex-1 border border-blue-600 text-blue-600 hover:bg-blue-50 font-medium py-2 px-6 rounded-md transition-colors">
-              Buy Now
-            </button>
-          </div>
-
           <div className="border-t border-gray-200 pt-6">
             <h3 className="text-lg font-medium text-gray-900 mb-4">Tags</h3>
             <div className="flex flex-wrap gap-2">
@@ -198,7 +188,7 @@ const ProductPage = ({ product }) => {
                 <textarea
                   id="comment"
                   rows={3}
-                  className="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
                   placeholder="Share your thoughts about this product..."
                 />
               </div>
