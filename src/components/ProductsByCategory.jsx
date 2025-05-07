@@ -10,7 +10,7 @@ const ProductsByCategory = () => {
   const [showFilters, setShowFilters] = React.useState(false);
   const [priceRange, setPriceRange] = React.useState([0, 1000]);
   const [selectedBrands, setSelectedBrands] = React.useState([]);
-  const [sortOption, setSortOption] = React.useState('featured');
+  const [sortOption, setSortOption] = React.useState('rating');
 
   // Extract unique brands from products
   const brands = React.useMemo(() => {
@@ -42,14 +42,12 @@ const ProductsByCategory = () => {
         return result.sort((a, b) => b.price - a.price);
       case 'rating':
         return result.sort((a, b) => b.rating - a.rating);
-      case 'newest':
-        return result.sort(
-          (a, b) => new Date(b.meta?.createdAt) - new Date(a.meta?.createdAt)
-        );
       default:
         return result;
     }
   }, [data, selectedBrands, priceRange, sortOption]);
+
+  console.log(filteredProducts)
 
   const toggleBrand = (brand) => {
     setSelectedBrands(prev =>

@@ -1,45 +1,28 @@
-/* import { User } from 'lucide-react'
-import React from 'react'
-
-const Header = ( {children} ) => {
-  return (
-    <>
-    <nav className='flex fixed top-0 left-0 right-0 z-50 backdrop-blur-md h-15 items-center justify-center bg-primary/10 text-text-dark'>
-      <div className='container w-full bg- flex items-center justify-between'>
-        <p className='text-xl font-bold'>
-          find-r
-        </p>
-
-        <div className='flex gap-4'>
-        </div>
-
-        <div className='p-1 rounded-full border'>
-          <User />
-        </div>
-      </div>
-    </nav>
-    {children}
-    </>
-  )
-}
-
-export default Header */
-
 import { User, ShoppingCart, Search, Menu } from 'lucide-react'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Header = ({ children }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
 
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Shop', path: '/products' },
-    { name: 'Categories', path: '/categories' },
+    { name: 'Categories', path: '/products/categories' },
     { name: 'About', path: '/about' },
-    { name: 'Contact', path: '/contact' }
   ]
+
+  const navigate = useNavigate()
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      navigate(`/products/search?q=${encodeURIComponent(searchQuery.trim())}`)
+      setSearchOpen(false)
+    }
+  }
 
   return (
     <>
@@ -87,7 +70,7 @@ const Header = ({ children }) => {
                 <Search className="h-5 w-5" />
               </button>
               
-              <Link 
+              {/* <Link 
                 to="/cart" 
                 className="p-2 text-gray-700 hover:text-blue-600 transition-colors relative"
               >
@@ -95,7 +78,7 @@ const Header = ({ children }) => {
                 <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   3
                 </span>
-              </Link>
+              </Link> */}
               
               <Link 
                 to="/account" 
@@ -109,16 +92,18 @@ const Header = ({ children }) => {
           {/* Mobile Search (shown when searchOpen is true) */}
           {searchOpen && (
             <div className="pb-4 px-2">
-              <div className="relative mt-2 rounded-md shadow-sm">
+              <form onSubmit={handleSearch} className="relative mt-2 rounded-md shadow-sm">
                 <input
                   type="text"
                   className="block w-full rounded-md border-0 py-2 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 sm:text-sm sm:leading-6"
                   placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                   <Search className="h-5 w-5 text-gray-400" />
                 </div>
-              </div>
+              </form>
             </div>
           )}
         </div>

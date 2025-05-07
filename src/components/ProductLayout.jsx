@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom'
 const ProductLayout = () => {
   return (
     <>
-      <div className='w-full pt-20'>
+      <div className='w-full'>
         <Outlet />
       </div>
     </>
