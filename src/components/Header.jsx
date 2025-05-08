@@ -80,12 +80,11 @@ const Header = ({ children }) => {
                 </span>
               </Link> */}
               
-              <Link 
-                to="/account" 
+              <div 
                 className="p-2 rounded-full border border-gray-300 text-gray-700 hover:border-blue-600 hover:text-blue-600 transition-colors"
               >
                 <User className="h-5 w-5" />
-              </Link>
+              </div>
             </div>
           </div>
 
